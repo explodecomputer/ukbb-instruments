@@ -59,7 +59,7 @@ g$out <- paste0("mod/data-", g$pre, "-", g$chunk, "-40.txt")
 
 mapping <- fread("../../data.7445.csv", he=T, sep=",")
 
-for(i in 1:nrow(g))
+for(i in 99:nrow(g))
 {
 	message(i, " of ", nrow(g))
 	a <- fread(g$filename[i], header=TRUE, sep=",")
