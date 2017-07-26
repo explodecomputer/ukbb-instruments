@@ -70,6 +70,10 @@ g <- expand.grid(chunk=1:40, pre=c("binary", "ord", "cont"))
 g$filename <- paste0("~/data/bb/UKBIOBANK_Phenotypes_App_15825/data/derived/phesant/data-", g$pre, "-", g$chunk, "-40.txt")
 g$out <- paste0("~/data/bb/UKBIOBANK_Phenotypes_App_15825/data/derived/phesant/data-", g$pre, "-", g$chunk, "-40-mod.txt")
 
+fn <- list.files("~/data/bb/UKBIOBANK_Phenotypes_App_15825/data/derived/phesant/mod/")
+g <- data.frame(out=paste0("~/data/bb/UKBIOBANK_Phenotypes_App_15825/data/derived/phesant/mod/", fn), stringsAsFactors=FALSE)
+g$binary <- grepl("binary", g$out)
+
 l <- list()
 for(i in 1:nrow(g))
 {
@@ -78,7 +82,7 @@ for(i in 1:nrow(g))
 	{	
 		l[[i]] <- data.frame(
 			filename=g$out[i], 
-			type=g$pre[i],
+			binary=g$binary[i],
 			phen=scan(g$out[i], what=character(), nlines=1)[-c(1:2)]
 		)
 	}
@@ -104,7 +108,7 @@ vars <- vars[first:last, ]
 for(i in 1:nrow(vars))
 {
 	message(i)
-	plink_run(geno, covs, vars$filename[i], vars$phen[i], out, exclude, fr, vars$type[i] == "binary")
+	plink_run(geno, covs, vars$filename[i], vars$phen[i], out, exclude, fr, vars$binary[i])
 }
 
 
