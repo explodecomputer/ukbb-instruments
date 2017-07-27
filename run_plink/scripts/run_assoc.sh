@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=runplink
-#SBATCH --array=1-200
+#SBATCH --array=1-200 -o=job_reports/
 #SBATCH --nodes=1 --tasks-per-node=28 --time=0-12:00:00
 
 echo "Running on ${HOSTNAME}"
@@ -14,7 +14,4 @@ fi
 
 i=${SLURM_ARRAY_TASK_ID}
 
-
-cd ${HOME}/repo/ukbb-instruments/scripts
-
-Rscript run_assoc.r ${i} 100
+Rscript run_assoc.r ${i} 105

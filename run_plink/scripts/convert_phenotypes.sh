@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=makephen
-#SBATCH --nodes=1 --mem=50G --time=0-12:00:00
+#SBATCH --nodes=1 --mem=64G --time=0-12:00:00
 
 echo "Running on ${HOSTNAME}"
 module add R/3.2.3-foss-2016a
