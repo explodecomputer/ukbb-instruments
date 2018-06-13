@@ -15,27 +15,29 @@ for(i in 1:nrow(g))
 	message(i)
 	if(file.exists(g$out[i]))
 	{	
+		phen <- fread(g$out[i],he=T)
+		phen <- phen[,-c(1:2)]
+		ncase <- rep(0, ncol(phen))
+		ncontrol <- rep(0, ncol(phen))
+		for(j in 1:ncol(phen))
+		{
+
+			if(g$binary[i])
+			{
+				ncontrol[j] <- sum(phen[,..j] == 1, na.rm=TRUE)
+				ncase[j] <- sum(phen[,..j] == 2, na.rm=TRUE)
+			} else {
+				ncase[j] <- NA
+				ncontrol[j] <- sum(!is.na(phen[,..j]))
+			}
+		}
 		l[[i]] <- data.frame(
 			filename=g$out[i], 
-			binary=g$binary[i]
-			)
-			#phen=scan(g$out[i], what=character(), nlines=1)[-c(1:2)],
-			phen <- fread(g$out[i],he=T)
-			phen <- phen[,-c(1:2)]
-			ncase <- rep(0, ncol(phen))
-			ncontrol <- rep(0, ncol(phen))
-			for(j in 1:ncol(phen))
-			{
-
-				if(g$binary[i])
-				{
-					ncontrol[j <- sum(phen[,j] == 1, na.rm=TRUE)
-					ncase[j] <- sum(phen[,j] == 2, na.rm=TRUE)
-				} else {
-					ncase[j] <- NA
-					ncontrol[j] <- sum(!is.na(phen[,j]))
-				}
-				
+			binary=g$binary[i],
+			phen=names(phen),
+			#phen=scan(g$out[i], what=character(), nlines=1)[-c(1:2)],				
+			ncontrol=ncontrol,
+			ncase=ncase
 		)
 	}
 }
