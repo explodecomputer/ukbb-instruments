@@ -5,9 +5,10 @@
 # plink2
 # cat-bgen
 
-bgen_pattern="${HOME}/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/raw_downloaded/ukb_imp_chrCHROM_v2.bgen"
-bgen_index_pattern="${HOME}/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/raw_downloaded/ukb_bgi_chrCHROM_v2.bgi"
-snp_list="${HOME}/repo/mr-eve/results/01/instrumentlist.txt"
+bgen_pattern="${HOME}/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/raw_downloaded/dosage_bgen/ukb_imp_chrCHROM_v2.bgen"
+bgen_index_pattern="${HOME}/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/raw_downloaded/dosage_bgen/ukb_bgi_chrCHROM_v2.bgi"
+snp_list="${HOME}/repo/ukbb-instruments/run_plink/genotypes/mrbase_instruments_20180612.txt"
+outname="mrbase_instruments_20180612"
 
 # Extract using bgen
 temp_prefix="../genotypes/temp_genotypes"
@@ -22,19 +23,20 @@ for chrom in {1..22}; do
 	cmd="${cmd} ${temp_prefix}.${chrom}.bgen"
 done
 
-cat-bgen -g ${cmd} -og ../genotypes/instruments.bgen
+cat-bgen -g ${cmd} -og ../genotypes/${outname}.bgen
+cp ~/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/id_mapping/app8786/data.sample ../genotypes/app8786.sample
 
 plink2 \
---bgen ../genotypes/instruments.bgen \
---sample ~/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/raw_downloaded/8786_link/imp/ukb878_imp_chr22_v2_s487406.sample \
+--bgen ../genotypes/${outname}.bgen \
+--sample ~/data/bb/UKBIOBANK_Array_Genotypes_500k_HRC_Imputation/data/id_mapping/app8786/data.sample \
 --hard-call-threshold 0.4999 \
 --make-bed \
---out ../genotypes/instruments
+--out ../genotypes/${outname}
 
 plink2 \
---bfile ../genotypes/instruments \
+--bfile ../genotypes/${outname} \
 --freq \
---out ../genotypes/instruments
+--out ../genotypes/${outname}
 
 # module load apps/qctool-2.0rc4
 
